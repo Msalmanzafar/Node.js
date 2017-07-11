@@ -1,26 +1,25 @@
 var readline = require('readline');
 var rl = readline.createInterface(process.stdin, process.stdout);
+var fs = require("fs");
+
 var realPerson = {
-    // mes: '',
     name: '',
     sayings: []
 };
 
 rl.question("What is the name of real person ? ", function (ans) {
-    // realPerson.mes = ans;
-    // if (realPerson.mes.toLowerCase().trim() === 'bad') {
-    //     rl.setPrompt(`Why you said ${realPerson.mes}? something happen!`);
-    //     rl.prompt();
-    // }else {
-    //     rl.setPrompt(`Stay bless. \n Can i help you ?`);
-    //     rl.prompt();
-    // }
+
     realPerson.name = ans;
+
+    fs.writeFileSync(realPerson.name + ".md", `${realPerson.name}\n ===================\n\n`);
+
     rl.setPrompt(`What would ${realPerson.name} say? `);
     rl.prompt();
     rl.on('line', function(saying){
 
         realPerson.sayings.push(saying.trim());
+
+        fs.appendFile(realPerson.name +'.md' , ` * ${saying.trim()} \n`);
 
         if(saying.toLowerCase().trim() === 'exit'){
             rl.close();
